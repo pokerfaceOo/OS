@@ -11,6 +11,5 @@ class Hello {
 
 int main() {
     Hello::ShoutOutLoud("World");
-    system("pause");
     return 0;
 }
