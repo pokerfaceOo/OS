@@ -81,13 +81,13 @@ int main(int argc, char* argv[]) {
     for(int i = 1; i < argc - 1; i++) {
             int status = nums.ReadFromFile(argv[i]);
             switch(status) {
-                           case -1: //статус ошибки, из-за которой желательно остановить программу
+                           case -1: //Fatal error. Program will not continue.
                                 cout << "Program was aborted" << endl;
                                 return 0;
                                 break;
-                           case 0: //ошибка есть, но не сильно портит нам жизнь
+                           case 0: //Error was founded, but it's not fatal. Program will continue
                                 cout << "Program will continue" << endl;
-                           case 1: //все ОК
+                           case 1: //OK
                                 break;                                
             }
     }
