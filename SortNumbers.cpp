@@ -10,45 +10,49 @@ class Numbers {
       private:
       vector<int> numlist;
       
+      void ExcDisplay (exception& exc, string msg) {
+           cerr << msg << exc.what() << endl;
+      }
+      
       public:
              
       int ReadFromFile(char * filename) {
-          ifstream fin;
           try {
-           fin.open(filename);
+           ifstream fin(filename);
            if(fin == NULL)
                   throw ifstream::failure(" cannot open the file");
            int tmp;
            while(!fin.eof()) {
                               fin >> tmp;
                               numlist.push_back(tmp);
-           }
+          }
           }catch (ifstream::failure& exc) {
-                 cerr << "Problem in opening or reading file \"" << filename << "\":" << exc.what() << endl;
+                 string msg = "Problem in opening or reading file \"";
+                 msg += filename;
+                 msg += "\":";
+                 ExcDisplay(exc, msg);
                  return 0;
           }catch (bad_alloc& exc) {
-                 cerr << "Bad memory allocation: " << exc.what() << endl;
-                 fin.close();
+                 ExcDisplay(exc, "Bad memory allocation: ");
                  return -1;
           }catch (overflow_error& exc) {
-                 cerr << "Overflow: " << exc.what() << endl;
-                 fin.close();
+                 ExcDisplay(exc, "Overflow: ");
                  return -1;
           }catch(exception& exc) {
-                 cerr << "Unknown exception: " << exc.what() << endl;
-                 fin.close();
+                 ExcDisplay(exc, "Unknown error: ");
                  return 0;
           }
-          fin.close();
           return 1;
       }
       
-      void SortNumbers() {
+      bool SortNumbers() {
            try{
            sort(numlist.begin(), numlist.end());
            }catch(exception& exc) {
-                           cerr << "Problem with sort: " << exc.what() << endl;
+                           cerr << "Problem with sort: " << exc.what() << ". Program was aborted." << endl;
+                           return false;
            }
+           return true;
       }
       void WriteNumbers(char* filename) {
            ofstream fout;
@@ -77,15 +81,18 @@ int main(int argc, char* argv[]) {
     for(int i = 1; i < argc - 1; i++) {
             int status = nums.ReadFromFile(argv[i]);
             switch(status) {
-                           case -1:
+                           case -1: //статус ошибки, из-за которой желательно остановить программу
+                                cout << "Program was aborted" << endl;
                                 return 0;
                                 break;
-                           case 0:
+                           case 0: //ошибка есть, но не сильно портит нам жизнь
+                                cout << "Program will continue" << endl;
+                           case 1: //все ОК
                                 break;                                
             }
     }
-    nums.SortNumbers();
-    nums.WriteNumbers(argv[argc-1]);
+    if(nums.SortNumbers())
+                          nums.WriteNumbers(argv[argc-1]);
     
     return 0;
 }
