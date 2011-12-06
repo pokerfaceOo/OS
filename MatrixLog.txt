@@ -1,0 +1,12 @@
+Matrix size: 1024x1024
+Multiplication (simple): 43.401sec 
+Matrix size: 1024x1024
+Multiplication (tiling): 22.003sec
+Matrix size: 1536x1536
+Multiplication (simple): 103.817sec 
+Matrix size: 1536x1536
+Multiplication (tiling): 72.938sec 
+Matrix size: 2048x2048
+Multiplication (simple): 410.528sec 
+Matrix size: 2048x2048
+Multiplication (tiling): 199.163sec 
