@@ -17,8 +17,8 @@ void WriteCandidate(int posEnd) {
      ofstream fout;
      //Making the filename of candidate on boot sector
      string filename = "candidate";
-     char* tail = new char[3];
-     itoa(++candIndex, tail, 10);
+     char* tail = new char[sizeof(candIndex) * 2 + 1];
+     itoa(candIndex, tail, 10);
      filename += tail;
      char *chr_fname = new char[filename.length()];
      strcpy(chr_fname,filename.data());
@@ -28,13 +28,12 @@ void WriteCandidate(int posEnd) {
              throw ios::failure(" can't open file for writing");
      fout.write(buf, 512);
      fout.close();
-     
      //Making the filename of candidate's disasm
      //prevFound = posEnd; 
      //filename = "\"C:\\Program Files\\nasm\\ndisasm\" " + filename + ">disasm";
-     filename = "ndisasm" + filename + ">disasm"
-     tail = new char[3];
-     itoa(candIndex, tail, 10);
+     filename = "ndisasm " + filename + ">disasm";
+     tail = new char[sizeof(candIndex) * 2 + 1];
+     itoa(candIndex++, tail, 10);
      filename += tail;
      filename += ".txt";
      chr_fname = new char[filename.length()];
