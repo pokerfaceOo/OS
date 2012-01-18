@@ -1,18 +1,21 @@
-	org 0x7c00
+org 0x7c00
 
 _start:
 	jmp 0:_st
 
 _st:
+	cli
 	xor si, si
 	mov ds, si
 	mov es, si
+	mov ss, si
+	sti
 	mov ax, 0x201
 	mov cx, 2
-	xor	dx, dx
 	mov bx, 0x7e00
-	int 13h
-
+	int 0x13
+	jc	_err
+	
 	cli
 	lgdt [gdt]
 	mov	eax, cr0
@@ -21,16 +24,16 @@ _st:
 	jmp 8:_lb
 _lb:
 	bits 32
-	sti
 	mov ax, 16
 	mov ds, ax
 	call 0x7e00
-
+	sti
+	
 _err:
 	cli
 	hlt
 jmp _err
-
+	sti
 
 gdt: 
 	descr dw 24
