@@ -15,17 +15,14 @@ _st:
 	mov bx, 0x7e00
 	int 0x13
 	jc	_err
-	
-	lgdt [gdt]
 	cli
+	lgdt [gdt]
 	mov	eax, cr0
 	or	eax, 1
 	mov	cr0, eax
-	sti
 	jmp 8:_lb
 _lb:
 	bits 32
-	cli
 	mov ax, 16
 	mov ds, ax
 	sti
@@ -35,7 +32,6 @@ _err:
 	cli
 	hlt
 jmp _err
-	sti
 
 gdt: 
 	descr dw 24
