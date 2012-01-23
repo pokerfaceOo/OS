@@ -13,6 +13,7 @@ _st:
 	mov ax, 0x201
 	mov cx, 2
 	mov bx, 0x7e00
+	mov dh, 0
 	int 0x13
 	jc	_err
 	cli
